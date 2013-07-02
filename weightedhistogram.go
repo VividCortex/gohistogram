@@ -16,7 +16,7 @@ type WeightedHistogram struct {
 // There is no "optimal" bin count, but somewhere between 20 and 80 bins should be
 // sufficient.
 //
-// Alpha should be set to 2 / (N+1), where N represents the age of the moving window.
+// Alpha should be set to 2 / (N+1), where N represents the average age of the moving window.
 // For example, a 60-second window with an average age of 30 seconds would yield an
 // alpha of 0.064516129.
 func NewWeightedHistogram(n int, alpha float64) *WeightedHistogram {
