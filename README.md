@@ -5,6 +5,9 @@
 The histograms in this package are based on the algorithms found in
 Ben-Haim & Tom-Tov's *A Streaming Parallel Decision Tree Algorithm*
 ([PDF](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)).
+Histogram bins do not have a preset size. As values stream into
+the histogram, bins are dynamically added and merged.
+
 Another implementation can be found in the Apache Hive project (see
 [NumericHistogram](http://hive.apache.org/docs/r0.11.0/api/org/apache/hadoop/hive/ql/udf/generic/NumericHistogram.html)).
 
