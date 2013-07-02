@@ -1,8 +1,8 @@
-gohistogram
+gohistogram ![build status](https://circleci.com/gh/VividCortex/gohistogram.png?circle-token=d37ec652ea117165cd1b342400a801438f575209)
 =======
 http://godoc.org/github.com/VividCortex/gohistogram
 
-![build status](https://circleci.com/gh/VividCortex/gohistogram.png?circle-token=d37ec652ea117165cd1b342400a801438f575209)
+![cats](http://i.imgur.com/QxRTWAEm.jpg)
 
 ![histogram](http://i.imgur.com/5OplaRs.png)
 
