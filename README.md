@@ -1,5 +1,7 @@
 gohistogram
 =======
+![build status](https://circleci.com/gh/VividCortex/gohistogram.png?circle-token=d37ec652ea117165cd1b342400a801438f575209)
+
 ![histogram](http://i.imgur.com/5OplaRs.png)
 
 The histograms in this package are based on the algorithms found in
