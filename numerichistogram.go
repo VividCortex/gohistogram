@@ -12,6 +12,9 @@ type NumericHistogram struct {
 }
 
 // NewHistogram returns a new NumericHistogram with a maximum of n bins.
+//
+// There is no "optimal" bin count, but somewhere between 20 and 80 bins
+// should be sufficient.
 func NewHistogram(n int) *NumericHistogram {
 	return &NumericHistogram{
 		bins:    make([]bin, 0),
