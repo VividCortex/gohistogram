@@ -40,6 +40,12 @@ You can run the tests now:
     $ cd src/github.com/VividCortex/gohistogram
     $ go test .
 
+## API Documentation
+
+Full source documentation can be found [here][godoc].
+
+[godoc]: http://godoc.org/github.com/VividCortex/gohistogram
+
 ## License
 
 Copyright (c) 2013 VividCortex
