@@ -2,7 +2,23 @@ gohistogram
 =======
 ![histogram](http://i.imgur.com/5OplaRs.png)
 
+The histograms in this package are based on the algorithms found in
+Ben-Haim & Tom-Tov's *A Streaming Parallel Decision Tree Algorithm*
+([PDF](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)).
+Another implementation can be found in the Apache Hive project (see
+NumericHistogram).
 
+The accurate method of calculating quantiles (like percentiles) requires
+data to be sorted. Streaming histograms make it possible to approximate
+quantiles without sorting (or even individually storing) values.
+
+`NumericHistogram` is the more basic implementation of a streaming
+histogram. `WeightedHistogram` implements bin values as exponentially-weighted
+moving averages.
+
+A maximum bin size is passed as an argument to the constructor methods. A
+larger bin size yields more accurate approximations at the cost of increased
+memory utilization and performance.
 
 ### License
     Copyright (c) 2013 VividCortex
