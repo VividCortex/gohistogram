@@ -1,16 +1,16 @@
-gohistogram
-=======
-http://godoc.org/github.com/VividCortex/gohistogram
+# gohistogram - Histograms in Go
 
 ![build status](https://circleci.com/gh/VividCortex/gohistogram.png?circle-token=d37ec652ea117165cd1b342400a801438f575209)
-
-![histogram](http://i.imgur.com/5OplaRs.png)
 
 The histograms in this package are based on the algorithms found in
 Ben-Haim & Tom-Tov's *A Streaming Parallel Decision Tree Algorithm*
 ([PDF](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)).
 Another implementation can be found in the Apache Hive project (see
 [NumericHistogram](http://hive.apache.org/docs/r0.11.0/api/org/apache/hadoop/hive/ql/udf/generic/NumericHistogram.html)).
+
+An example:
+
+![histogram](http://i.imgur.com/5OplaRs.png)
 
 The accurate method of calculating quantiles (like percentiles) requires
 data to be sorted. Streaming histograms make it possible to approximate
@@ -24,23 +24,24 @@ A maximum bin size is passed as an argument to the constructor methods. A
 larger bin size yields more accurate approximations at the cost of increased
 memory utilization and performance.
 
-### License
-    Copyright (c) 2013 VividCortex
+A picture of kittens:
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
+![stack of kittens](http://i.imgur.com/QxRTWAE.jpg)
 
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
+## Getting started
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
+Get the code into your workspace:
+
+    $ cd $GOPATH
+    $ git clone git@github.com:VividCortex/gohistogram.git ./src/github.com/VividCortex/gohistogram
+
+You can run the tests now:
+
+    $ cd src/github.com/VividCortex/gohistogram
+    $ go test .
+
+## License
+
+Copyright (c) 2013 VividCortex
+
+Released under MIT License. Check `LICENSE` file for details.
