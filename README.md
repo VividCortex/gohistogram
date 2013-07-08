@@ -33,6 +33,16 @@ A picture of kittens:
 
 ## Getting started
 
+### Using in your own code
+
+    $ go get github.com/VividCortex/gohistogram
+    
+```go
+import "github.com/VividCortex/gohistogram"
+```
+
+### Running tests and making modifications
+
 Get the code into your workspace:
 
     $ cd $GOPATH
