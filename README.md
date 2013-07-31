@@ -2,6 +2,9 @@
 
 ![build status](https://circleci.com/gh/VividCortex/gohistogram.png?circle-token=d37ec652ea117165cd1b342400a801438f575209)
 
+This package provides [Streaming Approximate Histograms](https://vividcortex.com/blog/2013/07/08/streaming-approximate-histograms/)
+for efficient quantile approximations.
+
 The histograms in this package are based on the algorithms found in
 Ben-Haim & Tom-Tov's *A Streaming Parallel Decision Tree Algorithm*
 ([PDF](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)).
