@@ -87,6 +87,8 @@ func (h *NumericHistogram) trim() {
 	}
 }
 
+// String returns a string reprentation of the histogram,
+// which is useful for printing to a terminal.
 func (h *NumericHistogram) String() (str string) {
 	str += fmt.Sprintln("Total:", h.total)
 
