@@ -1,5 +1,7 @@
 package gohistogram
 
+import "fmt"
+
 // A WeightedHistogram implements Histogram. A WeightedHistogram has bins that have values
 // which are exponentially weighted moving averages. This allows you keep inserting large
 // amounts of data into the histogram and approximate quantiles with recency factored in.
@@ -112,4 +114,18 @@ func (h *WeightedHistogram) trim() {
 		tail := append([]bin{mergedbin}, h.bins[minDeltaIndex+1:]...)
 		h.bins = append(head, tail...)
 	}
+}
+
+func (h *WeightedHistogram) String() (str string) {
+	str += fmt.Sprintln("Total:", h.total)
+
+	for i := range h.bins {
+		var bar string
+		for j := 0; j < int(float64(h.bins[i].count)/float64(h.total)*200); j++ {
+			bar += "."
+		}
+		str += fmt.Sprintln(h.bins[i].value, "\t", bar)
+	}
+
+	return
 }
