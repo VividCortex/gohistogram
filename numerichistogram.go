@@ -1,7 +1,6 @@
 package gohistogram
 
 import (
-	"bytes"
 	"fmt"
 )
 
@@ -88,16 +87,18 @@ func (h *NumericHistogram) trim() {
 	}
 }
 
-func (h *NumericHistogram) print() {
-	fmt.Println("===================================")
-	fmt.Println("Total:", h.total)
+// String returns a string reprentation of the histogram,
+// which is useful for printing to a terminal.
+func (h *NumericHistogram) String() (str string) {
+	str += fmt.Sprintln("Total:", h.total)
 
 	for i := range h.bins {
-		var buffer bytes.Buffer
+		var bar string
 		for j := 0; j < int(float64(h.bins[i].count)/float64(h.total)*200); j++ {
-			buffer.WriteString(".")
+			bar += "."
 		}
-		fmt.Println(h.bins[i].value, "\t", buffer.String())
+		str += fmt.Sprintln(h.bins[i].value, "\t", bar)
 	}
-	fmt.Println("===================================")
+
+	return
 }
