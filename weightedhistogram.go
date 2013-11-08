@@ -38,7 +38,7 @@ func ewma(existingVal float64, newVal float64, alpha float64) (result float64) {
 func (h *WeightedHistogram) scaleDown(except int) {
 	for i := range h.bins {
 		if i != except {
-			h.bins[i].value = ewma(h.bins[i].value, 0, h.alpha)
+			h.bins[i].count = ewma(h.bins[i].count, 0, h.alpha)
 		}
 	}
 }
