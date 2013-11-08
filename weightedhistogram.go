@@ -71,7 +71,7 @@ func (h *WeightedHistogram) Add(n float64) {
 }
 
 func (h *WeightedHistogram) Quantile(q float64) float64 {
-	count := q * float64(h.total)
+	count := q * h.total
 	for i := range h.bins {
 		count -= float64(h.bins[i].count)
 
