@@ -83,6 +83,19 @@ func (h *WeightedHistogram) Quantile(q float64) float64 {
 	return -1
 }
 
+// CDF returns the value of the cumulative distribution function
+// at x
+func (h *WeightedHistogram) CDF(x float64) float64 {
+	count := 0.0
+	for i := range h.bins {
+		if h.bins[i].value <= x {
+			count += float64(h.bins[i].count)
+		}
+	}
+
+	return count / h.total
+}
+
 func (h *WeightedHistogram) trim() {
 	total := 0.0
 	for i := range h.bins {

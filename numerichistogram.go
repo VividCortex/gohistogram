@@ -59,6 +59,19 @@ func (h *NumericHistogram) Quantile(q float64) float64 {
 	return -1
 }
 
+// CDF returns the value of the cumulative distribution function
+// at x
+func (h *NumericHistogram) CDF(x float64) float64 {
+	count := 0.0
+	for i := range h.bins {
+		if h.bins[i].value <= x {
+			count += float64(h.bins[i].count)
+		}
+	}
+
+	return count / float64(h.total)
+}
+
 // trim merges adjacent bins to decrease the bin count to the maximum value
 func (h *NumericHistogram) trim() {
 	for len(h.bins) > h.maxbins {

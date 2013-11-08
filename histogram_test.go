@@ -25,6 +25,12 @@ func TestHistogram(t *testing.T) {
 	if per := h.Quantile(0.9); math.Abs(per-1.282) > 0.13 {
 		t.Errorf("Expected 90th percentile to be 1.282, got %v", per)
 	}
+	if cdf := h.CDF(1.282); math.Abs(cdf-0.9) > 0.05 {
+		t.Errorf("Expected 90th percentile to be 0.9, got %v", cdf)
+	}
+	if cdf := h.CDF(0); math.Abs(cdf-0.5) > 0.05 {
+		t.Errorf("Expected 90th percentile to be 0.5, got %v", cdf)
+	}
 }
 
 func TestWeightedHistogram(t *testing.T) {
@@ -45,5 +51,11 @@ func TestWeightedHistogram(t *testing.T) {
 	}
 	if per := h.Quantile(0.9); math.Abs(per-1.282) > 0.26 {
 		t.Errorf("Expected 90th percentile to be 1.282, got %v", per)
+	}
+	if cdf := h.CDF(1.282); math.Abs(cdf-0.9) > 0.05 {
+		t.Errorf("Expected 90th percentile to be 0.9, got %v", cdf)
+	}
+	if cdf := h.CDF(0); math.Abs(cdf-0.5) > 0.05 {
+		t.Errorf("Expected 90th percentile to be 0.5, got %v", cdf)
 	}
 }
