@@ -119,9 +119,14 @@ func (h *WeightedHistogram) trim() {
 		}
 
 		// We need to merge bins minDeltaIndex-1 and minDeltaIndex
+		totalCount := h.bins[minDeltaIndex-1].count + h.bins[minDeltaIndex].count
 		mergedbin := bin{
-			value: (h.bins[minDeltaIndex-1].value + h.bins[minDeltaIndex].value) / 2, // average value
-			count: h.bins[minDeltaIndex-1].count + h.bins[minDeltaIndex].count,       // summed heights
+			value: (h.bins[minDeltaIndex-1].value*
+				h.bins[minDeltaIndex-1].count +
+				h.bins[minDeltaIndex].value*
+					h.bins[minDeltaIndex].count) /
+				totalCount, // weighted average
+			count: totalCount, // summed heights
 		}
 		head := append(make([]bin, 0), h.bins[0:minDeltaIndex-1]...)
 		tail := append([]bin{mergedbin}, h.bins[minDeltaIndex+1:]...)
