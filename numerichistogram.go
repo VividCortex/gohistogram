@@ -72,6 +72,29 @@ func (h *NumericHistogram) CDF(x float64) float64 {
 	return count / float64(h.total)
 }
 
+// ExpectedValue returns the expected value of the distribution
+func (h *NumericHistogram) ExpectedValue() float64 {
+	sum := 0.0
+
+	for i := range h.bins {
+		sum += h.bins[i].value * (h.bins[i].count / float64(h.total))
+	}
+
+	return sum
+}
+
+// Variance returns the variance of the distribution
+func (h *NumericHistogram) Variance() float64 {
+	sum := 0.0
+
+	for i := range h.bins {
+		sum += h.bins[i].value * h.bins[i].value * (h.bins[i].count / float64(h.total))
+	}
+	expectedValue := h.ExpectedValue()
+
+	return sum - (expectedValue)
+}
+
 // trim merges adjacent bins to decrease the bin count to the maximum value
 func (h *NumericHistogram) trim() {
 	for len(h.bins) > h.maxbins {
