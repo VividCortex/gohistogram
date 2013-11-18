@@ -2,58 +2,58 @@ package gohistogram
 
 import (
 	"math"
-	"math/rand"
 	"testing"
 )
 
+func approx(x, y float64) bool {
+	return math.Abs(x-y) < 0.2
+}
+
 func TestHistogram(t *testing.T) {
-	h := NewHistogram(20)
-	for i := 0; i < 100; i++ {
-		h.Add(rand.NormFloat64())
+	h := NewHistogram(160)
+	for _, val := range testData {
+		h.Add(float64(val))
 	}
-	if h.total != 100 {
+	if h.total != 14999 {
 		t.Errorf("Expected h.total to be 100, got ", h.total)
 	}
-	if per := h.Quantile(0.5); math.Abs(per) > 0.13 {
-		t.Errorf("Expected 50th percentile to be 0.0, got %v", per)
-	}
-	if per := h.Quantile(0.75); math.Abs(per-0.675) > 0.13 {
-		t.Errorf("Expected 75th percentile to be 0.675, got %v", per)
-	}
-	if per := h.Quantile(0.9); math.Abs(per-1.282) > 0.13 {
-		t.Errorf("Expected 90th percentile to be 1.282, got %v", per)
-	}
 
-	if cdf := h.CDF(1.282); math.Abs(cdf-0.9) > 0.05 {
-		t.Errorf("Expected CDF(1.282) to be 0.9, got %v", cdf)
+	if firstQ := h.Quantile(0.25); !approx(firstQ, 14) {
+		t.Errorf("Expected 25th percentile to be %v, got %v", 14, firstQ)
 	}
-	if cdf := h.CDF(0); math.Abs(cdf-0.5) > 0.05 {
-		t.Errorf("Expected CDF(0) to be 0.5, got %v", cdf)
+	if median := h.Quantile(0.5); !approx(median, 18) {
+		t.Errorf("Expected 50th percentile to be %v, got %v", 18, median)
+	}
+	if thirdQ := h.Quantile(0.75); !approx(thirdQ, 22) {
+		t.Errorf("Expected 75th percentile to be %v, got %v", 22, thirdQ)
+	}
+	if cdf := h.CDF(18); !approx(cdf, 0.5) {
+		t.Errorf("Expected CDF(median) to be %v, got %v", 0.5, cdf)
+	}
+	if cdf := h.CDF(22); !approx(cdf, 0.75) {
+		t.Errorf("Expected CDF(3rd quartile) to be %v, got %v", 0.75, cdf)
 	}
 }
 
 func TestWeightedHistogram(t *testing.T) {
-	h := NewWeightedHistogram(20, 1)
-	for i := 0; i < 100; i++ {
-		h.Add(rand.NormFloat64())
-	}
-	if h.total != 100 {
-		t.Errorf("Expected h.total to be 100, got ", h.total)
-	}
-	if per := h.Quantile(0.5); math.Abs(per) > 0.13 {
-		t.Errorf("Expected 50th percentile to be 0.0, got %v", per)
-	}
-	if per := h.Quantile(0.75); math.Abs(per-0.675) > 0.13 {
-		t.Errorf("Expected 75th percentile to be 0.675, got %v", per)
-	}
-	if per := h.Quantile(0.9); math.Abs(per-1.282) > 0.26 {
-		t.Errorf("Expected 90th percentile to be 1.282, got %v", per)
+	h := NewWeightedHistogram(160, 1)
+	for _, val := range testData {
+		h.Add(float64(val))
 	}
 
-	if cdf := h.CDF(1.282); math.Abs(cdf-0.9) > 0.05 {
-		t.Errorf("Expected CDF(1.282) to be 0.9, got %v", cdf)
+	if firstQ := h.Quantile(0.25); !approx(firstQ, 14) {
+		t.Errorf("Expected 25th percentile to be %v, got %v", 14, firstQ)
 	}
-	if cdf := h.CDF(0); math.Abs(cdf-0.5) > 0.05 {
-		t.Errorf("Expected CDF(0) to be 0.5, got %v", cdf)
+	if median := h.Quantile(0.5); !approx(median, 18) {
+		t.Errorf("Expected 50th percentile to be %v, got %v", 18, median)
+	}
+	if thirdQ := h.Quantile(0.75); !approx(thirdQ, 22) {
+		t.Errorf("Expected 75th percentile to be %v, got %v", 22, thirdQ)
+	}
+	if cdf := h.CDF(18); !approx(cdf, 0.5) {
+		t.Errorf("Expected CDF(median) to be %v, got %v", 0.5, cdf)
+	}
+	if cdf := h.CDF(22); !approx(cdf, 0.75) {
+		t.Errorf("Expected CDF(3rd quartile) to be %v, got %v", 0.75, cdf)
 	}
 }

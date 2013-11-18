@@ -96,6 +96,29 @@ func (h *WeightedHistogram) CDF(x float64) float64 {
 	return count / h.total
 }
 
+// ExpectedValue returns the expected value of the distribution
+func (h *WeightedHistogram) ExpectedValue() float64 {
+	sum := 0.0
+
+	for i := range h.bins {
+		sum += h.bins[i].value * (h.bins[i].count / h.total)
+	}
+
+	return sum
+}
+
+// Variance returns the variance of the distribution
+func (h *WeightedHistogram) Variance() float64 {
+	sum := 0.0
+
+	for i := range h.bins {
+		sum += h.bins[i].value * h.bins[i].value * (h.bins[i].count / h.total)
+	}
+	expectedValue := h.ExpectedValue()
+
+	return sum - (expectedValue)
+}
+
 func (h *WeightedHistogram) trim() {
 	total := 0.0
 	for i := range h.bins {
