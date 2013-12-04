@@ -128,6 +128,10 @@ func (h *WeightedHistogram) Variance() float64 {
 	return sum / h.total
 }
 
+func (h *WeightedHistogram) Count() float64 {
+	return h.total
+}
+
 func (h *WeightedHistogram) trim() {
 	total := 0.0
 	for i := range h.bins {
