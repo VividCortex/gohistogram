@@ -103,6 +103,10 @@ func (h *NumericHistogram) Variance() float64 {
 	return sum / float64(h.total)
 }
 
+func (h *NumericHistogram) Count() float64 {
+	return float64(h.total)
+}
+
 // trim merges adjacent bins to decrease the bin count to the maximum value
 func (h *NumericHistogram) trim() {
 	for len(h.bins) > h.maxbins {
