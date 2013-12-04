@@ -122,7 +122,6 @@ func (h *WeightedHistogram) Variance() float64 {
 
 	for i := range h.bins {
 		sum += (h.bins[i].count * (h.bins[i].value - mean) * (h.bins[i].value - mean))
-		fmt.Println((h.bins[i].value))
 	}
 
 	return sum / h.total
