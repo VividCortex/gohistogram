@@ -16,7 +16,7 @@ type NumericHistogram struct {
 // should be sufficient.
 func NewHistogram(n int) *NumericHistogram {
 	return &NumericHistogram{
-		bins:    make([]bin, 0),
+		bins:    make([]bin, 0, n+1),
 		maxbins: n,
 		total:   0,
 	}
@@ -34,11 +34,11 @@ func (h *NumericHistogram) Add(n float64) {
 		if h.bins[i].value > n {
 
 			newbin := bin{value: n, count: 1}
-			head := append(make([]bin, 0), h.bins[0:i]...)
-
-			head = append(head, newbin)
 			tail := h.bins[i:]
-			h.bins = append(head, tail...)
+			h.bins = h.bins[0 : len(h.bins)+1]
+			copy(h.bins[i+1:], tail)
+			h.bins[i] = newbin
+
 			return
 		}
 	}
@@ -134,9 +134,11 @@ func (h *NumericHistogram) trim() {
 				totalCount, // weighted average
 			count: totalCount, // summed heights
 		}
-		head := append(make([]bin, 0), h.bins[0:minDeltaIndex-1]...)
-		tail := append([]bin{mergedbin}, h.bins[minDeltaIndex+1:]...)
-		h.bins = append(head, tail...)
+		head := h.bins[0:minDeltaIndex]
+		tail := h.bins[minDeltaIndex+1:]
+		head[minDeltaIndex] = mergedbin
+		copy(h.bins[minDeltaIndex+1:], tail)
+		h.bins = h.bins[:h.maxbins]
 	}
 }
 
