@@ -136,8 +136,8 @@ func (h *NumericHistogram) trim() {
 		}
 		head := h.bins[0:minDeltaIndex]
 		tail := h.bins[minDeltaIndex+1:]
-		head[minDeltaIndex] = mergedbin
-		copy(h.bins[minDeltaIndex+1:], tail)
+		head[minDeltaIndex-1] = mergedbin
+		copy(h.bins[minDeltaIndex:], tail)
 		h.bins = h.bins[:h.maxbins]
 	}
 }
