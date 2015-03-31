@@ -25,13 +25,13 @@ func NewHistogram(n int) *NumericHistogram {
 func (h *NumericHistogram) Add(n float64) {
 	defer h.trim()
 	h.total++
-	for i := range h.bins {
-		if h.bins[i].value == n {
+	for i, bini := range h.bins {
+		if bini.value == n {
 			h.bins[i].count++
 			return
 		}
 
-		if h.bins[i].value > n {
+		if bini.value > n {
 
 			newbin := bin{value: n, count: 1}
 			tail := h.bins[i:]
@@ -113,24 +113,27 @@ func (h *NumericHistogram) trim() {
 		// Find closest bins in terms of value
 		minDelta := 1e99
 		minDeltaIndex := 0
-		for i := range h.bins {
+		for i, bini := range h.bins {
 			if i == 0 {
 				continue
 			}
 
-			if delta := h.bins[i].value - h.bins[i-1].value; delta < minDelta {
+			if delta := bini.value - h.bins[i-1].value; delta < minDelta {
 				minDelta = delta
 				minDeltaIndex = i
 			}
 		}
 
+		binMinDeltaIdxSub1 := h.bins[minDeltaIndex-1]
+		binMinDeltaIdx := h.bins[minDeltaIndex]
+
 		// We need to merge bins minDeltaIndex-1 and minDeltaIndex
-		totalCount := h.bins[minDeltaIndex-1].count + h.bins[minDeltaIndex].count
+		totalCount := binMinDeltaIdxSub1.count + binMinDeltaIdx.count
 		mergedbin := bin{
-			value: (h.bins[minDeltaIndex-1].value*
-				h.bins[minDeltaIndex-1].count +
-				h.bins[minDeltaIndex].value*
-					h.bins[minDeltaIndex].count) /
+			value: (binMinDeltaIdxSub1.value*
+				binMinDeltaIdxSub1.count +
+				binMinDeltaIdx.value*
+					binMinDeltaIdx.count) /
 				totalCount, // weighted average
 			count: totalCount, // summed heights
 		}
