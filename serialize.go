@@ -26,7 +26,7 @@ func NewHistogramBytes(buff []byte) *NumericHistogram {
 	total = binary.LittleEndian.Uint64(buff)
 	maxbins = int(binary.LittleEndian.Uint64(buff[8:]))
 	lbins = int(binary.LittleEndian.Uint64(buff[16:]))
-	bins := make([]bin, lbins)
+	bins := make([]bin, lbins, maxbins+1)
 	for i, p := 0, 24; i < lbins; i, p = i+1, p+16 {
 		bins[i] = bin{
 			value: math.Float64frombits(binary.LittleEndian.Uint64(buff[p:])),
