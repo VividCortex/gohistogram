@@ -6,7 +6,7 @@ This package provides [Streaming Approximate Histograms](https://vividcortex.com
 for efficient quantile approximations.
 
 The histograms in this package are based on the algorithms found in
-Ben-Haim & Tom-Tov's *A Streaming Parallel Decision Tree Algorithm*
+Ben-Haim & Yom-Tov's *A Streaming Parallel Decision Tree Algorithm*
 ([PDF](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)).
 Histogram bins do not have a preset size. As values stream into
 the histogram, bins are dynamically added and merged.
