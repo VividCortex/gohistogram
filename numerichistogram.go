@@ -113,16 +113,19 @@ func (h *NumericHistogram) Count() float64 {
 
 // trim merges adjacent bins to decrease the bin count to the maximum value
 func (h *NumericHistogram) trim() {
+	if len(h.bins) <= 1 {
+		return
+	}
 	for len(h.bins) > h.maxbins {
 		// Find closest bins in terms of value
-		minDelta := 1e99
-		minDeltaIndex := 0
-		for i, bini := range h.bins {
-			if i == 0 {
+		minDelta := h.bins[1].value - h.bins[0].value
+		minDeltaIndex := 1
+		for i := 2; i < len(h.bins); i++ {
+			if i <= 1 {
 				continue
 			}
 
-			if delta := bini.value - h.bins[i-1].value; delta < minDelta {
+			if delta := h.bins[i].value - h.bins[i-1].value; delta < minDelta {
 				minDelta = delta
 				minDeltaIndex = i
 			}
