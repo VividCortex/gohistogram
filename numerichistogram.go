@@ -26,27 +26,28 @@ func NewHistogram(n int) *NumericHistogram {
 }
 
 func (h *NumericHistogram) Add(n float64) {
-	defer h.trim()
 	h.total++
 	for i, bini := range h.bins {
 		if bini.value == n {
 			h.bins[i].count++
+			h.trim()
 			return
 		}
 
 		if bini.value > n {
-
 			newbin := bin{value: n, count: 1}
 			tail := h.bins[i:]
 			h.bins = h.bins[0 : len(h.bins)+1]
 			copy(h.bins[i+1:], tail)
 			h.bins[i] = newbin
 
+			h.trim()
 			return
 		}
 	}
 
 	h.bins = append(h.bins, bin{count: 1, value: n})
+	h.trim()
 }
 
 func (h *NumericHistogram) Quantile(q float64) float64 {
