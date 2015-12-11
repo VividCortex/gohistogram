@@ -12,7 +12,7 @@ func TestHistogramBytes(t *testing.T) {
 	bq := h.Bytes()
 	h = NewHistogramBytes(bq)
 	if h.Count() != 14999 {
-		t.Errorf("Expected h.Count() to be 100, got ", h.Count())
+		t.Errorf("Expected h.Count() to be 14999, got %f", h.Count())
 	}
 
 	if firstQ := h.Quantile(0.25); !approx(firstQ, 14) {

@@ -18,7 +18,7 @@ func TestHistogram(t *testing.T) {
 		h.Add(float64(val))
 	}
 	if h.Count() != 14999 {
-		t.Errorf("Expected h.Count() to be 100, got ", h.Count())
+		t.Errorf("Expected h.Count() to be 14999, got %f", h.Count())
 	}
 
 	if firstQ := h.Quantile(0.25); !approx(firstQ, 14) {
