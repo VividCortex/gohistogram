@@ -27,7 +27,7 @@ func NewHistogram(n int) *NumericHistogram {
 
 func (h *NumericHistogram) Reset() {
 	h.total = 0
-	h.bins = h.bins[:1]
+	h.bins = h.bins[:0]
 }
 
 func (h *NumericHistogram) Add(n float64) {
