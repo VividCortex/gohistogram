@@ -19,34 +19,39 @@ type NumericHistogram struct {
 // should be sufficient.
 func NewHistogram(n int) *NumericHistogram {
 	return &NumericHistogram{
-		bins:    make([]bin, 0),
+		bins:    make([]bin, 0, n+1),
 		maxbins: n,
 		total:   0,
 	}
 }
 
+func (h *NumericHistogram) Reset() {
+	h.total = 0
+	h.bins = h.bins[:0]
+}
+
 func (h *NumericHistogram) Add(n float64) {
-	defer h.trim()
 	h.total++
-	for i := range h.bins {
-		if h.bins[i].value == n {
+	for i, bini := range h.bins {
+		if bini.value == n {
 			h.bins[i].count++
 			return
 		}
 
-		if h.bins[i].value > n {
-
-			newbin := bin{value: n, count: 1}
-			head := append(make([]bin, 0), h.bins[0:i]...)
-
-			head = append(head, newbin)
+		if bini.value > n {
+			// Insert a bin at i
 			tail := h.bins[i:]
-			h.bins = append(head, tail...)
+			h.bins = h.bins[0 : len(h.bins)+1]
+			copy(h.bins[i+1:], tail)
+			h.bins[i] = bin{value: n, count: 1}
+
+			h.trim()
 			return
 		}
 	}
 
 	h.bins = append(h.bins, bin{count: 1, value: n})
+	h.trim()
 }
 
 func (h *NumericHistogram) Quantile(q float64) float64 {
@@ -112,12 +117,15 @@ func (h *NumericHistogram) Count() float64 {
 
 // trim merges adjacent bins to decrease the bin count to the maximum value
 func (h *NumericHistogram) trim() {
+	if len(h.bins) <= 1 {
+		return
+	}
 	for len(h.bins) > h.maxbins {
 		// Find closest bins in terms of value
-		minDelta := 1e99
-		minDeltaIndex := 0
-		for i := range h.bins {
-			if i == 0 {
+		minDelta := h.bins[1].value - h.bins[0].value
+		minDeltaIndex := 1
+		for i := 2; i < len(h.bins); i++ {
+			if i <= 1 {
 				continue
 			}
 
@@ -127,19 +135,26 @@ func (h *NumericHistogram) trim() {
 			}
 		}
 
+		binMinDeltaIdxSub1 := h.bins[minDeltaIndex-1]
+		binMinDeltaIdx := h.bins[minDeltaIndex]
+
 		// We need to merge bins minDeltaIndex-1 and minDeltaIndex
-		totalCount := h.bins[minDeltaIndex-1].count + h.bins[minDeltaIndex].count
+		totalCount := binMinDeltaIdxSub1.count + binMinDeltaIdx.count
 		mergedbin := bin{
-			value: (h.bins[minDeltaIndex-1].value*
-				h.bins[minDeltaIndex-1].count +
-				h.bins[minDeltaIndex].value*
-					h.bins[minDeltaIndex].count) /
+			value: (binMinDeltaIdxSub1.value*
+				binMinDeltaIdxSub1.count +
+				binMinDeltaIdx.value*
+					binMinDeltaIdx.count) /
 				totalCount, // weighted average
 			count: totalCount, // summed heights
 		}
-		head := append(make([]bin, 0), h.bins[0:minDeltaIndex-1]...)
-		tail := append([]bin{mergedbin}, h.bins[minDeltaIndex+1:]...)
-		h.bins = append(head, tail...)
+
+		// Now remove bin minDeltaIndex by replacing minDeltaIndex-1 with mergedbin
+		head := h.bins[0:minDeltaIndex]
+		tail := h.bins[minDeltaIndex+1:]
+		head[minDeltaIndex-1] = mergedbin
+		copy(h.bins[minDeltaIndex:], tail)
+		h.bins = h.bins[:len(h.bins)-1]
 	}
 }
 
