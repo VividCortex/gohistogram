@@ -16,7 +16,7 @@ type WeightedHistogram struct {
 	alpha   float64
 }
 
-// NewHistogram returns a new NumericHistogram with a maximum of n bins with a decay factor
+// NewWeightedHistogram returns a new WeightedHistogram with a maximum of n bins with a decay factor
 // of alpha.
 //
 // There is no "optimal" bin count, but somewhere between 20 and 80 bins should be

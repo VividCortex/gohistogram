@@ -11,6 +11,10 @@ type Histogram interface {
 
 	// Quantile returns an approximation.
 	Quantile(n float64) (q float64)
+
+	// String returns a string reprentation of the histogram,
+	// which is useful for printing to a terminal.
+	String() (str string)
 }
 
 type bin struct {
