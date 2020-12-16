@@ -5,6 +5,7 @@ package gohistogram
 
 import (
 	"fmt"
+	"sort"
 )
 
 type NumericHistogram struct {
@@ -73,6 +74,17 @@ func (h *NumericHistogram) CDF(x float64) float64 {
 	}
 
 	return count / float64(h.total)
+}
+
+// PDF returns the probability density at x
+func (h *NumericHistogram) PDF(x float64) float64 {
+	if x <= h.bins[0].value || x > h.bins[len(h.bins)-1].value {
+		return 0.0
+	}
+	//NOTE: we can rest assured that i>0 because x > h.bins[0].value.  Similarly, x <= h.bins[-1].value, so i < len(h.bins)
+	i := sort.Search(len(h.bins), func(i int) bool { return h.bins[i].value >= x })
+	width := h.bins[i].value - h.bins[i-1].value
+	return h.bins[i-1].count / (width * float64(h.total))
 }
 
 // Mean returns the sample mean of the distribution
